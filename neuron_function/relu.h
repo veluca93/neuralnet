@@ -1,4 +1,4 @@
-#include "neuron_function/neuron_function.h"
+#include "neuron_function/neuron_function_fwd.h"
 
 class Relu : public NeuronFunction {
 public:

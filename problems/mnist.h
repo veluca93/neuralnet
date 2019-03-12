@@ -1,5 +1,5 @@
 #pragma once
-#include "problems/problem.h"
+#include "problems/problem_fwd.h"
 #include <string>
 #include <vector>
 
