@@ -23,6 +23,7 @@ public:
 
   virtual std::string Name() const = 0;
 
+  static std::unique_ptr<NeuronFunction> New(const std::string &function);
   static std::unique_ptr<NeuronFunction> New();
 
   ~NeuronFunction() = default;

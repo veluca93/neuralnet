@@ -9,6 +9,7 @@ DECLARE_string(problem);
 class Problem {
 public:
   static std::unique_ptr<Problem> New(bool train);
+  static std::unique_ptr<Problem> New(const std::string &problem, bool train);
   virtual size_t InputSize() const = 0;
   virtual size_t NumLabels() const = 0;
   virtual size_t NumInputs() const = 0;
