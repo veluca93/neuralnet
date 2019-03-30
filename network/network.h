@@ -1,11 +1,21 @@
 #pragma once
+#include "loss/loss.h"
 #include "neuron_function/neuron_function.h"
+#include "training/training.h"
+
+struct EpochStats {
+  size_t epoch_size;
+  size_t num_correct;
+  double total_loss;
+};
 
 class Network {
 public:
   Network(size_t n_input, size_t n_labels, const std::string &n_hidden,
-          const std::string &n_constants, NeuronFunction *function);
-  Network(size_t n_input, size_t n_labels, NeuronFunction *function);
+          const std::string &n_constants, NeuronFunction *function,
+          LossFunction *loss, NetworkTrainer *trainer);
+  Network(size_t n_input, size_t n_labels, NeuronFunction *function,
+          LossFunction *loss, NetworkTrainer *trainer);
 
 private:
   size_t WeightsForLayer(size_t i) const {
@@ -17,8 +27,10 @@ private:
   size_t n_input;
   size_t n_labels;
   NeuronFunction *function;
-  std::vector<double> weights;
-  std::vector<double> constants;
+  LossFunction *loss;
+  NetworkTrainer *trainer;
+  TrainableVector weights;
+  TrainableVector constants;
   std::vector<size_t> layer_sizes;
   std::vector<size_t> layer_constants;
 };

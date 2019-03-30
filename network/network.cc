@@ -31,8 +31,10 @@ std::vector<size_t> Split(const std::string &s_cpp) {
 } // namespace
 
 Network::Network(size_t n_input, size_t n_labels, const std::string &n_hidden,
-                 const std::string &n_constants, NeuronFunction *function)
-    : n_input(n_input), n_labels(n_labels), function(function) {
+                 const std::string &n_constants, NeuronFunction *function,
+                 LossFunction *loss, NetworkTrainer *trainer)
+    : n_input(n_input), n_labels(n_labels), function(function), loss(loss),
+      trainer(trainer) {
   auto hidden = Split(n_hidden);
   auto constants_per_layer = Split(n_constants);
   if (hidden.size() + 1 != constants.size()) {
@@ -54,12 +56,18 @@ Network::Network(size_t n_input, size_t n_labels, const std::string &n_hidden,
     total_weights += WeightsForLayer(i);
   }
   weights.resize(total_weights);
+  weights.kind(TrainableVector::kWeights);
+  trainer->InitVector(weights);
   size_t total_constants = 0;
   for (size_t num : layer_constants) {
     total_constants += num;
   }
   constants.resize(total_constants);
+  weights.kind(TrainableVector::kConstants);
+  trainer->InitVector(constants);
 }
 
-Network::Network(size_t n_input, size_t n_labels, NeuronFunction *function)
-    : Network(n_input, n_labels, FLAGS_n_hidden, FLAGS_n_constants, function) {}
+Network::Network(size_t n_input, size_t n_labels, NeuronFunction *function,
+                 LossFunction *loss, NetworkTrainer *trainer)
+    : Network(n_input, n_labels, FLAGS_n_hidden, FLAGS_n_constants, function,
+              loss, trainer) {}
