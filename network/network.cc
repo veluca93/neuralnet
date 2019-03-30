@@ -37,7 +37,7 @@ Network::Network(size_t n_input, size_t n_labels, const std::string &n_hidden,
       trainer(trainer) {
   auto hidden = Split(n_hidden);
   auto constants_per_layer = Split(n_constants);
-  if (hidden.size() + 1 != constants.size()) {
+  if (hidden.size() + 1 != constants_per_layer.size()) {
     fprintf(stderr, "Invalid number of hidden layers vs constants!\n");
     exit(1);
   }
