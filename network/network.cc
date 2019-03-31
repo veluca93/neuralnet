@@ -71,3 +71,23 @@ Network::Network(size_t n_input, size_t n_labels, NeuronFunction *function,
                  LossFunction *loss, NetworkTrainer *trainer)
     : Network(n_input, n_labels, FLAGS_n_hidden, FLAGS_n_constants, function,
               loss, trainer) {}
+
+void Network::Init(NetworkInitializer *init) {
+  size_t w_start = 0;
+  size_t c_start = 0;
+  for (size_t l = 0; l + 1 < NumLayers(); l++) {
+    for (size_t n = 0; n < layer_sizes[n + 1]; n++) {
+      init->InitRegularWeights(
+          weights.values().data() + w_start, layer_sizes[l], l,
+          layer_sizes[l] + layer_constants[l], layer_sizes[l + 1]);
+      init->InitConstantsWeights(
+          weights.values().data() + w_start + layer_sizes[l],
+          layer_constants[l], l, layer_sizes[l] + layer_constants[l],
+          layer_sizes[l + 1]);
+      w_start += layer_sizes[l] + layer_constants[l];
+    }
+    init->InitConstants(constants.values().data() + c_start, layer_constants[l],
+                        l);
+    c_start += layer_constants[l];
+  }
+}

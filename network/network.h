@@ -1,4 +1,5 @@
 #pragma once
+#include "init/init.h"
 #include "loss/loss.h"
 #include "neuron_function/neuron_function.h"
 #include "training/training.h"
@@ -16,6 +17,7 @@ public:
           LossFunction *loss, NetworkTrainer *trainer);
   Network(size_t n_input, size_t n_labels, NeuronFunction *function,
           LossFunction *loss, NetworkTrainer *trainer);
+  void Init(NetworkInitializer *init);
 
 private:
   size_t WeightsForLayer(size_t i) const {
