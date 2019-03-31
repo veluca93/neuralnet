@@ -18,5 +18,5 @@ public:
   static std::unique_ptr<LossFunction> New(const std::string &function);
   static std::unique_ptr<LossFunction> New();
 
-  ~LossFunction() = default;
+  virtual ~LossFunction() = default;
 };

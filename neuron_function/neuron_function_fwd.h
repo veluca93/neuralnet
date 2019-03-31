@@ -10,8 +10,8 @@ public:
   // Allows applying arbitrary transformations to the input values.
   virtual void TransformInput(double *inputs, size_t num) const {}
 
-  // Compute output and input/weight derivatives of a neuron. d_inputs and
-  // d_weights must be 0-initialized.
+  // Compute output and input/weight derivatives of a neuron. Increments
+  // d_inputs and d_weights.
   virtual double Output(const double *inputs, const double *weights,
                         size_t num_inputs, double *d_inputs,
                         double *d_weights) const = 0;
@@ -26,5 +26,5 @@ public:
   static std::unique_ptr<NeuronFunction> New(const std::string &function);
   static std::unique_ptr<NeuronFunction> New();
 
-  ~NeuronFunction() = default;
+  virtual ~NeuronFunction() = default;
 };

@@ -39,6 +39,10 @@ public:
 private:
   EpochStats Evaluate(Problem *problem, const std::vector<size_t> &indices,
                       bool train);
+  // Executes the network and saves derivatives of weights and inputs.
+  void RunNetwork(double *inputs, double *d_weights, double *d_inputs);
+  void UpdateGradients(const double *d_weights, const double *d_inputs,
+                       const double *d_outputs, double *grad_inputs);
 
   size_t WeightsForLayer(size_t i) const {
     // Layer i has (layer_sizes[i]+layer_constants[i]) * layer_sizes[i+1]

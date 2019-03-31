@@ -33,9 +33,9 @@ std::unique_ptr<MnistData> MnistData::Load(bool train) {
   assert(t == 28);
   assert(u == 28);
 
-  ret->data.resize(sized * ret->InputSize());
-  num = fread(ret->data.data(), 1, sized * ret->InputSize(), data);
-  assert(num == int(sized * ret->InputSize()));
+  ret->data.resize(sized * ret->NumInputs());
+  num = fread(ret->data.data(), 1, sized * ret->NumInputs(), data);
+  assert(num == int(sized * ret->NumInputs()));
 
   fclose(data);
   fclose(labels);

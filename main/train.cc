@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
   Network network(train_data->NumInputs(), train_data->NumLabels(),
                   neuron_function.get(), loss_function.get(), trainer.get());
   network.Init(initialzier.get());
-  std::vector<size_t> train_indices(train_data->NumInputs());
+  std::vector<size_t> train_indices(train_data->NumExamples());
   std::iota(train_indices.begin(), train_indices.end(), 0);
   std::mt19937 rng;
   std::shuffle(train_indices.begin(), train_indices.end(), rng);
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
                                          train_indices.end());
   train_indices.resize(train_size);
 
-  std::vector<size_t> test_indices(test_data->NumInputs());
+  std::vector<size_t> test_indices(test_data->NumExamples());
   std::iota(test_indices.begin(), test_indices.end(), 0);
 
   std::optional<Network> best_network;
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     auto stop = std::chrono::high_resolution_clock::now();
     fprintf(
         stderr,
-        "\rEpoch %4lu: %6lums, train: %6.3f loss, %6.2f%% acc, valid: %6.3f "
+        "\rEpoch %4lu: %6lums, train: %9.3f loss, %6.2f%% acc, valid: %9.3f "
         "loss, \033[37;1m%6.2f%%\033[;m acc\n",
         epoch,
         std::chrono::duration_cast<std::chrono::milliseconds>(stop - start)
@@ -80,7 +80,8 @@ int main(int argc, char **argv) {
     }
   }
   EpochStats test_stats = network.Evaluate(test_data.get(), test_indices);
-  fprintf(stderr, "Testing results: %6.3f loss, \033[37;1m%6.2f%%\033[;m acc\n",
+  fprintf(stderr,
+          "Testing results: %11.3f loss, \033[37;1m%6.2f%%\033[;m acc\n",
           test_stats.total_loss,
           100.0 * test_stats.num_correct / test_stats.epoch_size);
 }
